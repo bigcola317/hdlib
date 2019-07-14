@@ -7,6 +7,7 @@ HD encoding class
 '''
 import torch as t
 import csv
+import pickle
 
 
 __author__ = "Michael Hersche"
@@ -16,7 +17,7 @@ __date__ = "17.5.2019"
 
 
 class hd_encode():
-	def __init__(self,D,encoding,device,nitem=1,ngramm = 3, sparsity: int=90, resolution: int=100, itemmemory: string=''):
+	def __init__(self,D,encoding,device,nitem=1,ngramm = 3, sparsity: int=90, resolution: int=100, itemmemory: str=''):
 		'''	
 		Encoding 
 		Parameters
@@ -57,25 +58,25 @@ class hd_encode():
 
 		return
 
-	def exportItemMemory(o_file):
-		with open(o_file, 'wb') as fp:
-	        pickle.dump(self._itemMemory, fp)
-	        fp.close()
+	def exportItemMemory(self, o_file):
+		with open(o_file, 'wb+') as fp:
+			pickle.dump(self._itemMemory, fp)
+			fp.close()
 
 
-	def exportItemMemoryToCSV(o_file):
-		with open(o_file, mode='w') as fp:
+	def exportItemMemoryToCSV(self, o_file):
+		with open(o_file, mode='w+') as fp:
 			for item in self._itemMemory:
 				for bit in item:
-					fp.write(str(bit))
+					fp.write(str(bit.item()))
 				fp.write('\n')
 			fp.close()
 
 
-	def _loadItemMemory(filepath):
-		with open('filepath', 'rb') as fp:
-        	self._itemMemory = pickle.load(fp)
-        	fp.close()
+	def _loadItemMemory(self, filepath):
+		with open(filepath, 'rb') as fp:
+			self._itemMemory = pickle.load(fp)
+			fp.close()
 
 
 	def _generateItemMemory(self, sparsity: int, resolution: int):
