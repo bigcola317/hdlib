@@ -17,7 +17,7 @@ __date__ = "17.5.2019"
 
 
 class hd_encode():
-	def __init__(self,D,encoding,device,nitem=1,ngramm = 3, sparsity: int=90, resolution: int=100, itemmemory: str=''):
+	def __init__(self,D,encoding,device,nitem=1,ngramm = 3, sparsity: int=90, resolution: int=100, gen_item_mem=0, itemmemory_path: str=''):
 		'''	
 		Encoding 
 		Parameters
@@ -49,12 +49,14 @@ class hd_encode():
 			raise ValueError("No valid encoding! got "+ code)
 
 		# item memory initialization 
-		if itemmemory == '':
+		if gen_item_mem != 0:
 			self._generateItemMemory(sparsity, resolution)
+			self.exportItemMemory(itemmemory_path + '/item_mem.bin')
+			self.exportItemMemoryToCSV(itemmemory_path + '/item_mem.csv')
 		else:
-			self._loadItemMemory(itemmemory)
-		print("Item memories:")
-		print(self._itemMemory)
+			self._loadItemMemory(itemmemory_path + '/item_mem.bin')
+		# print("Item memories:")
+		# print(self._itemMemory)
 
 		return
 
