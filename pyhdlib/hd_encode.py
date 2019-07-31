@@ -19,7 +19,7 @@ __date__ = "17.5.2019"
 
 
 class hd_encode():
-	def __init__(self,D=10000,encoding='sumNgramm',device='cpu',nitem=1,ngramm = 3, sparsity: int=9980, gen_item_mem=0, itemmemory_path: str=''):
+	def __init__(self,D=10000,encoding='sumNgramm',device='cpu',nitem=1,ngramm = 3, sparsity: int=20, gen_item_mem=0, itemmemory_path: str=''):
 		'''	
 		Encoding 
 		Parameters
@@ -186,7 +186,7 @@ class hd_encode():
 
 		return self._Y
 
-	def _wordGrammEncoding(self, word, report):
+	def _wordGrammEncoding(self, word, report=None):
 		'''
 		Compute ngramm encoding for a given word
 		:param word: word to encode
@@ -200,7 +200,10 @@ class hd_encode():
 		for i, letter in enumerate(word):
 			key = self._charToKey(letter)
 			if key >= self._nitem or key < 0:
-				report.write("{} ".format(letter))
+				if report != None:
+					report.write("{} ".format(letter))
+				else:
+					print("Illegal char: {}\n".format(letter))
 			else:
 				shift_reg[n-i-1] = self._lookupItemMemory(key)
 		# print("Letter encodings")
@@ -222,7 +225,7 @@ class hd_encode():
 		return wordgramm
 
 
-	def encodeText(self, text, report):
+	def encodeText(self, text, report=None):
 
 		words = text.split()
 		# print(words)
